@@ -21,14 +21,13 @@ prediction_category = pd.DataFrame(encoder.inverse_transform(prediction),columns
 value_count = pd.DataFrame(prediction_category['class'].value_counts(),columns = ['class'])
 result_1 = list(value_count[value_count['class']==value_count['class'].max()].index)[0]
 
-# print (value_count)
+print (value_count)
 
 prediction_2 = model_2.predict(new_data)
 prediction_category_2 = pd.DataFrame(encoder.inverse_transform(prediction_2),columns = ['class'])
 value_count_2 = pd.DataFrame(prediction_category_2['class'].value_counts(),columns = ['class'])
 result_2 = list(value_count_2[value_count_2['class']==value_count_2['class'].max()].index)[0]
-# print (value_count_2)
-
+print (value_count_2)
 print (result_1,result_2)
 
 
