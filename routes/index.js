@@ -3,6 +3,9 @@ var router = express.Router();
 var {Parser}=require('json2csv');
 var fs=require('fs');
 var spawn=require('child_process').spawn;
+var path=require('path')
+var os=require('os')
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -61,13 +64,13 @@ router.post('/', function(req, res, next) {
       // success case, the file was saved
       console.log('csv saved!');
 
-      runModel('');
+      runModel('',res);
   });
 
 });
 
-function runModel(path){
-var process=spawn('python',['C:/Users/smpsh/Desktop/gestureClassify/untitled3.py']);
+function runModel(param,res){
+var process=spawn('python',[path.join(__dirname, '..', 'untitled3.py')]);
 console.log('process called')
 var tostr=function(d){
   return String.fromCharCode.apply(null,d);
@@ -75,15 +78,17 @@ var tostr=function(d){
 process.stdout.on('data',function(d){
  d= tostr(d);
   console.log('got back data')
-  console.log(d)
+  let result={'1':d.split(' ')[0].replace(/(\r\n|\n|\r)/gm, ""),'2':d.split(' ')[1].replace(/(\r\n|\n|\r)/gm, "")}
+  res.send(result)
+  console.log(result)
 });
 process.stderr.on('d',function(d){
   console.log(d)
 })
 
-process.on('exit',function(d){
+process.on('exit',function(d,s){
   console.log(d)
-  console.log()
+  console.log('err:',s)
 })
 
 }
